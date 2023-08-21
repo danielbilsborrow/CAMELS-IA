@@ -16,7 +16,7 @@ def download_file(url, save_path):
 if __name__ == "__main__":
 
     for filenum in np.arange(0,1000):
-        filenum = str("{:03d}".format(filenum))
+#        filenum = str("{:03d}".format(filenum))
         url = f"https://users.flatironinstitute.org/~camels/FOF_Subfind/IllustrisTNG/LH/LH_{filenum}/fof_subhalo_tab_033.hdf5"
         save_directory = "../CAMELS/."
         new_file_name = f"LH{filenum}_fof_subhalo_tab_033.hdf5"  # Change this to the new desired name
