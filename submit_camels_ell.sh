@@ -12,7 +12,7 @@
 #SBATCH --mail-user=zcapdjl@ucl.ac.uk
 #SBATCH --mail-type=ALL
 
-cd  /share/data1/zcapdjl/CAMELS-IA/ellipticity_measurements
+cd  /share/data1/zcapdjl/CAMELS-IA
 
 python3 09a.find_ellipticities.py
 
