@@ -14,5 +14,5 @@
 
 cd  /share/data1/zcapdjl/CAMELS-IA/ellipticity_measurements
 
-python 09a.find_ellipticities.py
+python3 09a.find_ellipticities.py
 
