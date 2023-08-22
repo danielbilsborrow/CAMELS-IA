@@ -111,7 +111,7 @@ nstar_g = nstar_sh.astype(float)
 nstar_g[subh_M_R_12<min_MstarMass] = np.nan
 #print('Galaxy positions shape: ', pos_g.shape)
 
-high_mass = np.where(subh_M_R_12>min_MstarMass)[0]
+high_mass = np.where((subh_M_R_12>min_MstarMass) & (nstar_sh > 10))[0]
 #print(high_mass.shape, "galaxies")
 
 # Create a boolean mask for the stars above the threshold mass
@@ -128,21 +128,31 @@ filtered_assignment1 = assignment1[mask]
 
 
 e_glxys = {} # dictionary for ellipticities 
+assigned2 = np.zeros(len(pos_g), dtype=bool)
 for axis in ['x','y','z']:
     e_glxys[axis] = 3.0*np.ones(len(pos_g), dtype = 'complex_') # set non calaculated values to 3
 
 for axis in ['x','y','z']:
     for i in range(len(pos_g)):
         if ~np.isnan(nstar_g[i]):
-            e_glxys[axis][i] = ellipticity(centre=pos_g2[i], theta=pos_s2[filtered_assignment1==i],
-                                           weight=mass_s2[filtered_assignment1==i], x_y_or_z=axis)
+            print(i,len(mass_s2[filtered_assignment1==i]), pos_s2[filtered_assignment1==i].shape,"{:.3E}".format(subh_M_R_12[i]))
+            if len(mass_s2[filtered_assignment1==i])>0: # some galaxies have no stars assigned to them ?
+                assigned2[i]=True
+                e_glxys[axis][i] = ellipticity(centre=pos_g[i], theta=pos_s2[filtered_assignment1==i],
+                                               weight=mass_s2[filtered_assignment1==i], x_y_or_z=axis)
 
+                
+for axis, ell_array in e_glxys.items():
+    e_glxys[axis] = ell_array[ell_array!=3]
+    #print(f"Old Shape of angles and ratios for axis '{axis}': {e_glxys[axis].shape}")
+
+pos_g3 = pos_g[assigned2] # one last filtering for galaxies which have no assigning stars
 #################
 
 # Save dictionaries to a file using pickle
 with open(f'../CAMELS/ellipticity_measurements/LH{filenum}_ellipticities.pkl', 'wb') as f:
     pickle.dump({
-        'posg': pos_g2,
+        'posg': pos_g3,
         'ellipticities': e_glxys,
         'dm_den': pos_dm
     }, f)
