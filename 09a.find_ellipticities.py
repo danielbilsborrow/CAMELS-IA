@@ -134,7 +134,7 @@ for axis in ['x','y','z']:
 for axis in ['x','y','z']:
     for i in range(len(pos_g)):
         if ~np.isnan(nstar_g[i]):
-            e_glxys[axis][i] = ellipticity(centre=pos_g[i], theta=pos_s2[filtered_assignment1==i],
+            e_glxys[axis][i] = ellipticity(centre=pos_g2[i], theta=pos_s2[filtered_assignment1==i],
                                            weight=mass_s2[filtered_assignment1==i], x_y_or_z=axis)
 
 #################
