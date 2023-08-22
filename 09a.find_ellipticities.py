@@ -97,7 +97,7 @@ for i, number_sh in enumerate(n_subhalos):
 #############
 
 #### Galaxies are subhalos with Mstar > 1e8 Msun
-min_MstarMass = 1e8 # threshold stellar mass
+min_MstarMass = 1e8 # threshold stellar mass approximatley 10 stellar particles
 
 # removing unasigned stars from star index
 pos_s1 = pos_s[assigned]
