@@ -75,8 +75,6 @@ with open(f'../CAMELS/ellipticity_measurements/LH{filenum}_ellipticities.pkl', '
 ####################
 # SLICING
 
-sliced_s= slicer(pos_s2, num_slices=15) # slicing stars
-
 sliced_g, sliced_ell = slicer(pos_g, num_slices=15, ell_dict=e_glxys, ell=True) # slicing galaxies
 
 sliced_dm = slicer(pos_dm, num_slices=15) # slicing dark matter
