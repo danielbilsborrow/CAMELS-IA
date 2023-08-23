@@ -13,10 +13,16 @@ def ellipticity(centre, theta, weight, x_y_or_z='z'):
     perp_ax = xyz[x_y_or_z]
     centre = np.array([centre[perp_ax[0]], centre[perp_ax[1]]]).T       # 2D
     theta = np.array([theta[:,perp_ax[0]], theta[:,perp_ax[1]]]).T        # 2D
-    separation = theta - centre  #calculating separations of members from cluster centre
-    mag = np.linalg.norm(separation, axis=1)
-    separation = separation[mag<5] # filtering out stars which are more than 5 Mpc away from galaxy
-    weight = weight[mag<5]
+    separation = (theta - centre) %25 #calculating separations of members from cluster centre
+    for i in range(separation.shape[0]):
+        for j in range(2):  # Iterate over x, y, and z components
+            if separation[i, j] < -10:
+                separation[i, j] += 25
+            elif separation[i, j] > 10:
+                separation[i, j] -= 25
+#     mag = np.linalg.norm(separation, axis=1)
+#     separation = separation[mag<5] # filtering out stars which are more than 5 Mpc away from galaxy
+#     weight = weight[mag<5]
     prob = weight/np.max(weight)
     prob = np.array([prob,prob]).T # multiply x and y coord
     separation_scaled = np.multiply(separation, prob)
@@ -27,7 +33,7 @@ def ellipticity(centre, theta, weight, x_y_or_z='z'):
     return epsilon
 
 
-filenum = 12
+#filenum = 12
 for filenum in range(1000):
     # Importing snapshot and catalogue data at redshift z=0
     snapshot = f"../CAMELS/LH{filenum}_snap_033IllustrisTNG.hdf5"  # snapshot name
