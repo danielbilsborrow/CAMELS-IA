@@ -12,7 +12,7 @@ def download_file(url, save_path):
     else:
         print(f"Failed to download: {url}", flush=True)
 
-filenum = 600
+filenum = 868
 if __name__ == "__main__":
 
 #    for filenum in np.arange(0,1000):
