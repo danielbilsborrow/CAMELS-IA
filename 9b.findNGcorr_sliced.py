@@ -109,7 +109,7 @@ for axis in range(3):
         print(f'axis {_ax_} slice {_slice_} Time:',t3-t2,"+",t2-t1)
         r=ng.rnom
         del cat1,cat2,ng
-        gc.collect()
+        
 
 ############################
 
