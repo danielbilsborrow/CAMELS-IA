@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 import treecorr
 import time
+import h5py
 
 
 def slicer(array, num_slices=15, ell_dict=None, ell=False):
