@@ -3,12 +3,6 @@
 #SBATCH -N1
 #requesting 1 core
 #SBATCH -n1
-
-#!/bin/bash
-#requesting one node
-#SBATCH -N1
-#requesting 1 core
-#SBATCH -n1
 #SBATCH --mail-user=zcapdjl@ucl.ac.uk
 #SBATCH --mail-type=ALL
 
