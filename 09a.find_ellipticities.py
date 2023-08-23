@@ -166,7 +166,7 @@ for filenum in range(1000):
         
         
         
-    print("Done file:", filenum)
+    print("Done file:", filenum,"Num galaxies:",len(pos_g3))
     
     
     
