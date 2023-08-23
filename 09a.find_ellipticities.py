@@ -163,6 +163,10 @@ for filenum in range(1000):
             'ellipticities': e_glxys,
             'dm_den': pos_dm
         }, f)
+        
+        
+        
+    print("Done file:", filenum)
     
     
     
