@@ -34,7 +34,7 @@ def ellipticity(centre, theta, weight, x_y_or_z='z'):
 
 
 #filenum = 12
-for filenum in range(406,1000):
+for filenum in range(599,1000):
     # Importing snapshot and catalogue data at redshift z=0
     snapshot = f"../CAMELS/LH{filenum}_snap_033IllustrisTNG.hdf5"  # snapshot name
     # open the snapshot
