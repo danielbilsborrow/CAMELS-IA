@@ -34,7 +34,7 @@ def ellipticity(centre, theta, weight, x_y_or_z='z'):
 
 
 #filenum = 12
-for filenum in range(869,1000):
+for filenum in range(868,869):
     # Importing snapshot and catalogue data at redshift z=0
     snapshot = f"../CAMELS/LH{filenum}_snap_033IllustrisTNG.hdf5"  # snapshot name
     # open the snapshot
@@ -83,7 +83,8 @@ for filenum in range(869,1000):
 
                 if nstar_sh[subhalo_index]!=0:
                     begin_slice=end_slice
-                    end_slice = begin_slice + nstar_sh[subhalo_index+1]
+                    if subhalo_index+1 !=17557:
+                        end_slice = begin_slice + nstar_sh[subhalo_index+1]
 
                 star_count += nstar_sh[subhalo_index]
 
