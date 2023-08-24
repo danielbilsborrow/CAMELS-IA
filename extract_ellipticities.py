@@ -25,34 +25,33 @@ stdin, stdout, stderr = ssh.exec_command(f'ls {remote_directory}')
 remote_files = stdout.read().decode().split()
 
 i=0# Extract and save data from each pkl file
-for remote_file in remote_files:
-    if remote_file.endswith('.pkl'):
-        remote_path = os.path.join(remote_directory, remote_file)
-        print(remote_path)
-        # Download the pkl file
-        sftp = ssh.open_sftp()
-        local_path = os.path.join('C:\CAMELS DATA', remote_file)
-        sftp.get(remote_path, local_path)
-        sftp.close()
-        
-        # Load and extract data from the pkl file
-        with open(local_path, 'rb') as f:
-            data = pickle.load(f)
-            ellipticities = data['ellipticities']
-            posg = data['posg']
-            
-            # Save ellipticities and posg to local_extracted_directory
-            extracted_filename = os.path.splitext(remote_file)[0] + '_extracted.pkl'
-            extracted_path = os.path.join(local_extracted_directory, extracted_filename)
-            
-            with open(extracted_path, 'wb') as extracted_file:
-                extracted_data = {'ellipticities': ellipticities, 'posg': posg}
-                pickle.dump(extracted_data, extracted_file)
-        
-        # Remove the downloaded pkl file
-        os.remove(local_path)
-        print("LH:",i)
-        i+=1
+for filenum in range(0,1000):
+    remote_path = os.path.join(remote_directory, f'LH{filenum}_ellipticities.pkl')
+    print(remote_path)
+    # Download the pkl file
+    sftp = ssh.open_sftp()
+    local_path = os.path.join('C:\CAMELS DATA', f'LH{filenum}_ellipticities.pkl')
+    sftp.get(remote_path, local_path)
+    sftp.close()
+
+    # Load and extract data from the pkl file
+    with open(local_path, 'rb') as f:
+        data = pickle.load(f)
+        ellipticities = data['ellipticities']
+        posg = data['posg']
+
+        # Save ellipticities and posg to local_extracted_directory
+        extracted_filename = os.path.splitext(f'LH{filenum}_ellipticities.pkl')[0] + '_extracted.pkl'
+        extracted_path = os.path.join(local_extracted_directory, extracted_filename)
+
+        with open(extracted_path, 'wb') as extracted_file:
+            extracted_data = {'ellipticities': ellipticities, 'posg': posg}
+            pickle.dump(extracted_data, extracted_file)
+
+    # Remove the downloaded pkl file
+    os.remove(local_path)
+    print("LH:",i)
+    i+=1
 
 # Disconnect from the cluster
 ssh.close()

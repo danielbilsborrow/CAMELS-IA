@@ -65,66 +65,69 @@ def slicer(array, num_slices=15, ell_dict=None, ell=False):
 
 ####################
 #filenum = 12
-for filenum in range(504,550):
+for filenum in range(5,12):
     # Load dictionaries from the pickled file
-    with open(f'../CAMELS/ellipticity_measurements/LH{filenum}_ellipticities.pkl', 'rb') as f:
-        data = pickle.load(f)
-        pos_g = data['posg']
-        e_glxys = data['ellipticities']
-        pos_dm = data['dm_den']
+    try:
+        with open(f'../CAMELS/ellipticity_measurements/LH{filenum}_ellipticities.pkl', 'rb') as f:
+            data = pickle.load(f)
+            pos_g = data['posg']
+            e_glxys = data['ellipticities']
+            pos_dm = data['dm_den']
 
-    ####################
-    # SLICING
+        ####################
+        # SLICING
 
-    sliced_g, sliced_ell = slicer(pos_g, num_slices=15, ell_dict=e_glxys, ell=True) # slicing galaxies
+        sliced_g, sliced_ell = slicer(pos_g, num_slices=15, ell_dict=e_glxys, ell=True) # slicing galaxies
 
-    sliced_dm = slicer(pos_dm, num_slices=15) # slicing dark matter
-
-
-
-    ##################
-
-    xyz = [['x',1,2,0],['y',2,0,1],['z',0,1,2]]
-    nbins = 8
-    aggregate_corr_ng = []
-    aggregate_corr_ngvar = []
-    i=0
-    for axis in range(3):
-        _ax_ = xyz[axis][0] # which axis is perpendicular to the slice
-        h = xyz[axis][1] # horizontal axis
-        v = xyz[axis][2] # vertical axis
-        for _slice_ in range(15):
-            t1 = time.time()
-
-            cat1 = treecorr.Catalog(x=sliced_dm[_ax_][_slice_][:,h], y=sliced_dm[_ax_][_slice_][:,v])
-            cat2 = treecorr.Catalog(x=sliced_g[_ax_][_slice_][:,h], y=sliced_g[_ax_][_slice_][:,v],
-                                            g1=sliced_ell[_ax_][_slice_].real, g2=sliced_ell[_ax_][_slice_].imag)# two shear values (g1, g2)
-            ng = treecorr.NGCorrelation(min_sep=0.1, max_sep=25,bin_type='Log', nbins=nbins, var_method='jackknife',metric='Periodic',xperiod=25,yperiod=25)
-            t2 = time.time()
-            ng.process_cross(cat1,cat2)
-            varg = treecorr.calculateVarG(cat2)
-            ng.finalize(varg)
-            aggregate_corr_ng.append(ng.xi)
-            aggregate_corr_ngvar.append(varg)
-            t3 = time.time()
-            #print(f'axis {_ax_} slice {_slice_} Time:',t3-t2,"+",t2-t1)
-            r=ng.rnom
-            del cat1,cat2,ng
-            gc.collect()
+        sliced_dm = slicer(pos_dm, num_slices=15) # slicing dark matter
 
 
-    ############################
 
-    # Create an HDF5 file (or open if it exists)
-    with h5py.File('../CAMELS/correlation_funcs/IllustrisLH500-550_corfuncs.h5', 'a') as hf:
-        # Create datasets for simulation 1 arrays
-        hf.create_dataset(f'simulation{filenum}/corrfunc', data=aggregate_corr_ng)
-        hf.create_dataset(f'simulation{filenum}/corrvar', data=aggregate_corr_ngvar)
-        
-        if filenum ==0:
-            hf.create_dataset(f'simulation{filenum}/bins', data=r)
-    
-    print("done number:", filenum)
+        ##################
+
+        xyz = [['x',1,2,0],['y',2,0,1],['z',0,1,2]]
+        nbins = 8
+        aggregate_corr_ng = []
+        aggregate_corr_ngvar = []
+        i=0
+        for axis in range(3):
+            _ax_ = xyz[axis][0] # which axis is perpendicular to the slice
+            h = xyz[axis][1] # horizontal axis
+            v = xyz[axis][2] # vertical axis
+            for _slice_ in range(15):
+                t1 = time.time()
+
+                cat1 = treecorr.Catalog(x=sliced_dm[_ax_][_slice_][:,h], y=sliced_dm[_ax_][_slice_][:,v])
+                cat2 = treecorr.Catalog(x=sliced_g[_ax_][_slice_][:,h], y=sliced_g[_ax_][_slice_][:,v],
+                                                g1=sliced_ell[_ax_][_slice_].real, g2=sliced_ell[_ax_][_slice_].imag)# two shear values (g1, g2)
+                ng = treecorr.NGCorrelation(min_sep=0.1, max_sep=25,bin_type='Log', nbins=nbins, var_method='jackknife',metric='Periodic',xperiod=25,yperiod=25)
+                t2 = time.time()
+                ng.process_cross(cat1,cat2)
+                varg = treecorr.calculateVarG(cat2)
+                ng.finalize(varg)
+                aggregate_corr_ng.append(ng.xi)
+                aggregate_corr_ngvar.append(varg)
+                t3 = time.time()
+                #print(f'axis {_ax_} slice {_slice_} Time:',t3-t2,"+",t2-t1)
+                r=ng.rnom
+                del cat1,cat2,ng
+                gc.collect()
+
+
+        ############################
+
+        # Create an HDF5 file (or open if it exists)
+        with h5py.File('../CAMELS/correlation_funcs/IllustrisLH500-550_corfuncs.h5', 'a') as hf:
+            # Create datasets for simulation 1 arrays
+            hf.create_dataset(f'simulation{filenum}/corrfunc', data=aggregate_corr_ng)
+            hf.create_dataset(f'simulation{filenum}/corrvar', data=aggregate_corr_ngvar)
+
+            if filenum ==0:
+                hf.create_dataset(f'simulation{filenum}/bins', data=r)
+
+        print("done number:", filenum)
+    except:
+        print("missed:", filenum)
 
 
 
