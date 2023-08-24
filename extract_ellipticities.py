@@ -25,7 +25,7 @@ stdin, stdout, stderr = ssh.exec_command(f'ls {remote_directory}')
 remote_files = stdout.read().decode().split()
 
 i=0# Extract and save data from each pkl file
-for filenum in range(156,1000):
+for filenum in range(42,100):
     remote_path = os.path.join(remote_directory, f'LH{filenum}_ellipticities.pkl')
     print(remote_path)
     # Download the pkl file
