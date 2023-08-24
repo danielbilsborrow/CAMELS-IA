@@ -18,8 +18,11 @@ with h5py.File(output_file, 'w') as out_file:
         with h5py.File(input_file, 'r') as in_file:
             # Iterate through datasets in the input file
             for dataset_name in in_file:
-                # Copy dataset from the input file to the output file
-                in_file.copy(dataset_name, out_file)
+                try:
+                    # Copy dataset from the input file to the output file
+                    in_file.copy(dataset_name, out_file)
+                except:
+                    print("skipped",dataset_name)
 
 print(f"Combined HDF5 files into '{output_file}'.")
 
