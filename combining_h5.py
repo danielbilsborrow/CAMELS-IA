@@ -3,9 +3,9 @@ import h5py
 # List of input HDF5 files to be combined
 begin = 100
 end=150
-input_files = ['IllustrisLH_corfuncs.h5']
+input_files = ['../CAMELS/correlation_funcs/IllustrisLH_corfuncs.h5']
 for i in range(18):
-    input_files.append(f'IllustrisLH{begin}-{end}_corfuncs.h5')
+    input_files.append(f'../CAMELS/correlation_funcs/IllustrisLH{begin}-{end}_corfuncs.h5')
     begin+=50
     end+=50
 
