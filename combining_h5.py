@@ -9,9 +9,6 @@ for i in range(18):
     begin+=50
     end+=50
 
-# Output HDF5 file (the combined file)
-output_file = '../CAMELS/correlation_funcs/all_IllustrisLH_corfuncs.h5'
-
 # Open the output file in write mode
 with h5py.File(output_file, 'w') as out_file:
     for input_file in input_files:
@@ -19,10 +16,8 @@ with h5py.File(output_file, 'w') as out_file:
         with h5py.File(input_file, 'r') as in_file:
             # Iterate through datasets in the input file
             for dataset_name in in_file:
-                # Create a group in the output file for each dataset
-                group = out_file.create_group(dataset_name)
-                # Copy data from the input file to the output file
-                in_file[dataset_name].copy(group)
+                # Copy dataset from the input file to the output file
+                in_file.copy(dataset_name, out_file)
 
 print(f"Combined HDF5 files into '{output_file}'.")
 
