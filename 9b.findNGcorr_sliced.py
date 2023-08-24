@@ -117,7 +117,7 @@ for filenum in range(5,12):
         ############################
 
         # Create an HDF5 file (or open if it exists)
-        with h5py.File('../CAMELS/correlation_funcs/IllustrisLH500-550_corfuncs.h5', 'a') as hf:
+        with h5py.File('../CAMELS/correlation_funcs/IllustrisLH_corfuncs.h5', 'a') as hf:
             # Create datasets for simulation 1 arrays
             hf.create_dataset(f'simulation{filenum}/corrfunc', data=aggregate_corr_ng)
             hf.create_dataset(f'simulation{filenum}/corrvar', data=aggregate_corr_ngvar)
