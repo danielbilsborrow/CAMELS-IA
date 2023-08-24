@@ -16,8 +16,10 @@ output_file = '../CAMELS/correlation_funcs/all_IllustrisLH_corfuncs.h5'
 with h5py.File(output_file, 'w') as out_f:
     for input_file in input_files:
         with h5py.File(input_file, 'r') as in_f:
-            # Copy datasets and groups from input to output
-            in_f.copy('/', out_f)
+            for dataset_name in in_f:
+                in_dataset = in_f[dataset_name]
+                # Copy the dataset from the input file to the output file
+                out_dataset = out_f.create_dataset(dataset_name, data=in_dataset)
 
 print(f"Combined HDF5 files into '{output_file}'.")
 
