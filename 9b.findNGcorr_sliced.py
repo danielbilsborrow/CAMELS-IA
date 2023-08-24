@@ -65,7 +65,7 @@ def slicer(array, num_slices=15, ell_dict=None, ell=False):
 
 ####################
 #filenum = 12
-for filenum in range(503,550):
+for filenum in range(504,550):
     # Load dictionaries from the pickled file
     with open(f'../CAMELS/ellipticity_measurements/LH{filenum}_ellipticities.pkl', 'rb') as f:
         data = pickle.load(f)
