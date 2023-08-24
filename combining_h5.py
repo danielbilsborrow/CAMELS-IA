@@ -10,7 +10,7 @@ for i in range(18):
     end+=50
 
 # Output HDF5 file (the combined file)
-output_file = 'all_IllustrisLH_corfuncs.h5'
+output_file = '../CAMELS/correlation_funcs/all_IllustrisLH_corfuncs.h5'
 
 # Create the output HDF5 file
 with h5py.File(output_file, 'w') as out_f:
