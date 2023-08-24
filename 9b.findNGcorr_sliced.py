@@ -65,7 +65,7 @@ def slicer(array, num_slices=15, ell_dict=None, ell=False):
 
 ####################
 #filenum = 12
-for filenum in range(801,850):
+for filenum in range(887,900):
     # Load dictionaries from the pickled file
     try:
         with open(f'../CAMELS/ellipticity_measurements/LH{filenum}_ellipticities.pkl', 'rb') as f:
@@ -117,7 +117,7 @@ for filenum in range(801,850):
         ############################
 
         # Create an HDF5 file (or open if it exists)
-        with h5py.File('../CAMELS/correlation_funcs/IllustrisLH800-850_corfuncs.h5', 'a') as hf:
+        with h5py.File('../CAMELS/correlation_funcs/IllustrisLH850-900_corfuncs.h5', 'a') as hf:
             # Create datasets for simulation 1 arrays
             hf.create_dataset(f'simulation{filenum}/corrfunc', data=aggregate_corr_ng)
             hf.create_dataset(f'simulation{filenum}/corrvar', data=aggregate_corr_ngvar)
